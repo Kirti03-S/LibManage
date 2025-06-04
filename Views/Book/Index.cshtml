@@ -1,0 +1,57 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<LibManage.ViewModels.BookViewModel>
+@{
+    ViewData["Title"] = "Book List";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>📚 Book List</h2>
+        <a asp-action="Create" class="btn btn-success">➕ Add New Book</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            No books available in the library.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Title</th>
+                        <th>ISBN</th>
+                        <th>Published</th>
+                        <th>Stock</th>
+                        <th>Author</th>
+                        <th>Genre</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var book in Model)
+                    {
+                        <tr>
+                            <td>@book.Title</td>
+                            <td>@book.ISBN</td>
+                            <td>@book.PublishedDate.ToShortDateString()</td>
+                            <td>@book.Stock</td>
+                            <td>@book.Author.FirstName + Abook.Author.LastName</td> 
+                            <td>@book.Genre.Name</td> 
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@book.Id" class="btn btn-sm btn-warning me-1">Edit</a>
+                                <a asp-action="Details" asp-route-id="@book.Id" class="btn btn-sm btn-info me-1">Details</a>
+                                <a asp-action="Delete" asp-route-id="@book.Id" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
