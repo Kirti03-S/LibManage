@@ -1,4 +1,9 @@
-﻿@{
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -11,11 +16,16 @@
             Your complete Library Management System to handle books, authors, genres, and lending with ease.
         </p>
 
-        <a asp-controller="Book" asp-action="Index" class="btn btn-primary btn-lg shadow-sm px-4 py-2">
-            📖 Explore Book Catalog
-        </a>
-
         
+
+        @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
+        {
+            <a asp-controller="Catalog" asp-action="Index" class="btn btn-primary btn-lg shadow-sm px-4 py-2">
+                📖 Explore Book Catalog
+            </a>
+        }
+
+       
     </div>
 </div>
 

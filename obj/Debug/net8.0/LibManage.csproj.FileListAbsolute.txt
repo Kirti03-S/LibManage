@@ -168,3 +168,4 @@ C:\Users\Coditas-Admin\Desktop\asp\LibManage\LibManage\obj\Debug\net8.0\refint\L
 C:\Users\Coditas-Admin\Desktop\asp\LibManage\LibManage\obj\Debug\net8.0\LibManage.pdb
 C:\Users\Coditas-Admin\Desktop\asp\LibManage\LibManage\obj\Debug\net8.0\LibManage.genruntimeconfig.cache
 C:\Users\Coditas-Admin\Desktop\asp\LibManage\LibManage\obj\Debug\net8.0\ref\LibManage.dll
+C:\Users\Coditas-Admin\Desktop\asp\LibManage\LibManage\obj\Debug\net8.0\LibManage.sourcelink.json

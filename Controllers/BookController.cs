@@ -3,11 +3,13 @@ using LibManage.DTOs.Book;
 using LibManage.Models;
 using LibManage.Services.Interfaces;
 using LibManage.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LibManage.Controllers
 {
+    [Authorize]
     public class BookController : Controller
     {
         private readonly IBookService _bookService;
@@ -19,6 +21,7 @@ namespace LibManage.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "User,Admin")]
         public async Task<IActionResult> Index()
         {
             var books = await _bookService.GetAllBooksAsync();
@@ -30,6 +33,7 @@ namespace LibManage.Controllers
                 ISBN = b.ISBN,
                 PublishedDate = b.PublishedDate,
                 Stock = b.Stock,
+                Price=b.Price,
                 GenreId = b.GenreId,
                 Genre = new Genre { Id = b.GenreId, Name = b.GenreName },
                 AuthorId = b.AuthorId,
@@ -82,8 +86,10 @@ namespace LibManage.Controllers
                 ISBN = vm.ISBN,
                 PublishedDate = vm.PublishedDate,
                 Stock = vm.Stock,
+                Price=vm.Price,
                 GenreId = vm.GenreId.Value,
-                AuthorId = vm.AuthorId.Value
+                AuthorId = vm.AuthorId.Value,
+                CoverImageUrl = vm.CoverImageUrl
             });
 
             return RedirectToAction(nameof(Index));
@@ -102,8 +108,10 @@ namespace LibManage.Controllers
                 ISBN = book.ISBN,
                 PublishedDate = book.PublishedDate,
                 Stock = book.Stock,
+                Price=book.Price,
                 GenreId = book.GenreId,
-                AuthorId = book.AuthorId
+                AuthorId = book.AuthorId,
+                CoverImageUrl = book.CoverImageUrl
             };
 
             ViewBag.Authors = new SelectList(_context.Authors.ToList(), "Id", "FirstName");
@@ -135,8 +143,10 @@ namespace LibManage.Controllers
                 ISBN = vm.ISBN,
                 PublishedDate = vm.PublishedDate,
                 Stock = vm.Stock,
-                GenreId = vm.GenreId ?? 0,
-                AuthorId = vm.AuthorId ?? 0
+                Price=vm.Price,
+                GenreId = vm.GenreId.Value,
+                AuthorId = vm.AuthorId.Value,
+                CoverImageUrl = vm.CoverImageUrl 
             });
 
             return RedirectToAction(nameof(Index));
@@ -155,6 +165,7 @@ namespace LibManage.Controllers
                 ISBN = book.ISBN,
                 PublishedDate = book.PublishedDate,
                 Stock = book.Stock,
+                Price = book.Price,
                 GenreId = book.GenreId,
                 AuthorId = book.AuthorId
             };
@@ -182,6 +193,7 @@ namespace LibManage.Controllers
                 ISBN = book.ISBN,
                 PublishedDate = book.PublishedDate,
                 Stock = book.Stock,
+                Price = book.Price,
                 GenreId = book.GenreId,
                 Genre = new Genre { Id = book.GenreId, Name = book.GenreName },
                 AuthorId = book.AuthorId,
@@ -190,6 +202,31 @@ namespace LibManage.Controllers
 
             return View(viewModel);
         }
+
+        [Authorize(Roles = "User,Admin")]
+        public async Task<IActionResult> Catalog()
+        {
+            var books = await _bookService.GetAllBooksAsync();
+
+            var viewModel = books.Select(b => new BookViewModel
+            {
+                Id = b.Id,
+                Title = b.Title,
+                ISBN = b.ISBN,
+                PublishedDate = b.PublishedDate,
+                Stock = b.Stock,
+                Price = b.Price, // Make sure your Book entity has Price
+                CoverImageUrl = b.CoverImageUrl, // Image URL or path
+                GenreId = b.GenreId,
+                Genre = new Genre { Id = b.GenreId, Name = b.GenreName },
+                AuthorId = b.AuthorId,
+                Author = new Author { Id = b.AuthorId, FirstName = b.AuthorName }
+            }).ToList();
+
+            return View(viewModel);
+        }
+
+
 
 
     }

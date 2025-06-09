@@ -1,4 +1,5 @@
 ﻿using LibManage.Models;
+using LibManage.Models.LibManage.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibManage.Data
@@ -12,6 +13,8 @@ namespace LibManage.Data
         public DbSet<Author> Authors { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<LendingRecord> LendingRecords => Set<LendingRecord>();
+        public DbSet<User> Users { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

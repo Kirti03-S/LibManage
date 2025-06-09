@@ -1,7 +1,9 @@
 using LibManage.Data;
+using LibManage.Models.LibManage.Models;
 using LibManage.Repositories;
 using LibManage.Repositories;
 using LibManage.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +21,20 @@ builder.Services.AddDbContext<LibraryDbContext>(options =>
 
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+
+builder.Services.AddAuthentication("CookieAuth")
+    .AddCookie("CookieAuth", options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Home/Index";
+    });
+
+builder.Services.AddAuthorization();
+
+
+
 
 var app = builder.Build();
 
@@ -39,7 +55,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapRazorPages();
 app.MapControllerRoute(

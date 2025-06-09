@@ -9,6 +9,7 @@ public class Book
     public string ISBN { get; set; } = "";
     public DateTime PublishedDate { get; set; }
     public int Stock { get; set; }
+    public decimal Price { get; set; }
 
     // Foreign Keys
     public int GenreId { get; set; }
@@ -20,5 +21,7 @@ public class Book
     // Navigation
     public ICollection<Review>? Reviews { get; set; }
     public ICollection<LendingRecord>? LendingRecords { get; set; }
+    public string? CoverImageUrl { get; set; }
+
 }
 

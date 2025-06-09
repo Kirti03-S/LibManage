@@ -28,9 +28,28 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Book" asp-action="Index">📖 Book List</a>
                         </li>
+                        @* <li class="nav-item"> *@
+                        @*     <a class="nav-link text-light" asp-controller="Account" asp-action="Register">Register</a> *@
+                        @* </li> *@
+                        @* <li class="nav-item"> *@
+                        @*     <a class="nav-link text-light" asp-controller="Account" asp-action="Login">Login</a> *@
+                        @* </li> *@
                         
                     </ul>
                 </div>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                        <button class="btn btn-link text-danger">Logout (@User.Identity.Name)</button>
+                    </form>
+                }
+                else
+                {
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-link">Register</a>
+
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-link">Login</a>
+                }
+
             </div>
         </nav>
     </header>

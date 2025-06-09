@@ -1,0 +1,36 @@
+﻿@model IEnumerable<LibManage.ViewModels.BookCatalogViewModel>
+
+@{
+    ViewData["Title"] = "Explore Book Catalog";
+}
+
+<h2>Explore Book Catalog 📚</h2>
+
+<div class="row">
+    @foreach (var book in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="@book.CoverImageUrl" class="card-img-top" alt="Book Cover" style="height: 300px; object-fit: cover;" />
+                <div class="card-body">
+                    <h5 class="card-title">@book.Title</h5>
+                    <p class="card-text">
+                        <strong>Author:</strong> @book.AuthorName<br />
+                        <strong>Genre:</strong> @book.GenreName<br />
+                        <strong>Price:</strong> ₹@book.Price<br />
+                    </p>
+                </div>
+                <div class="card-footer text-center">
+                    <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                        <input type="hidden" name="bookId" value="@book.Id" />
+                        <button type="submit" class="btn btn-primary">Add to Cart</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="mt-4 text-center">
+    <a asp-controller="Order" asp-action="Checkout" class="btn btn-success btn-lg">Place Order</a>
+</div>

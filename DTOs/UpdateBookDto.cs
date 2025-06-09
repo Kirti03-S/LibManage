@@ -9,4 +9,7 @@ public class UpdateBookDto
     public int Stock { get; set; }
     public int GenreId { get; set; }
     public int AuthorId { get; set; }
+    public string? CoverImageUrl { get; set; }
+
+
 }

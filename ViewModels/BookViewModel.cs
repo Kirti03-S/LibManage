@@ -9,13 +9,15 @@ namespace LibManage.ViewModels
         public string ISBN { get; set; }
         public DateTime PublishedDate { get; set; }
         public int Stock { get; set; }
-
-        public int? GenreId { get; set; } 
+        public decimal Price { get; set; }
+        public int? GenreId { get; set; }
         public Genre? Genre { get; set; }
 
         public int? AuthorId { get; set; }
-        public Author? Author { get; set; }
+        public Author? Author { get; set; } 
+        public string? CoverImageUrl { get; set; } 
     }
+
 
 }
 

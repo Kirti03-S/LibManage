@@ -26,10 +26,12 @@ public class BookService : IBookService
                 ISBN = b.ISBN,
                 PublishedDate = b.PublishedDate,
                 Stock = b.Stock,
+                Price = b.Price,
                 AuthorId = b.AuthorId,
                 AuthorName = b.Author.FirstName,
                 GenreId = b.GenreId,
-                GenreName = b.Genre.Name
+                GenreName = b.Genre.Name,
+                CoverImageUrl = b.CoverImageUrl
             })
             .ToListAsync();
     }
@@ -50,10 +52,12 @@ public class BookService : IBookService
             ISBN = book.ISBN,
             PublishedDate = book.PublishedDate,
             Stock = book.Stock,
+            Price = book.Price,
             AuthorId = book.AuthorId,
             AuthorName = book.Author.FirstName,
             GenreId = book.GenreId,
-            GenreName = book.Genre.Name
+            GenreName = book.Genre.Name,
+            CoverImageUrl = book.CoverImageUrl
         };
     }
 
@@ -64,9 +68,11 @@ public class BookService : IBookService
             Title = bookDto.Title,
             ISBN = bookDto.ISBN,
             PublishedDate = bookDto.PublishedDate,
+            Price = bookDto.Price,
             Stock = bookDto.Stock,
             GenreId = bookDto.GenreId,
-            AuthorId = bookDto.AuthorId
+            AuthorId = bookDto.AuthorId,
+            CoverImageUrl = bookDto.CoverImageUrl
         };
 
         _context.Books.Add(book);
@@ -82,10 +88,12 @@ public class BookService : IBookService
             ISBN = book.ISBN,
             PublishedDate = book.PublishedDate,
             Stock = book.Stock,
+            Price = book.Price,
             AuthorId = book.AuthorId,
             AuthorName = $"{author?.FirstName} {author?.LastName}",
             GenreId = book.GenreId,
-            GenreName = genre?.Name ?? ""
+            GenreName = genre?.Name ?? "",
+            CoverImageUrl = book.CoverImageUrl
         };
     }
 
@@ -98,8 +106,10 @@ public class BookService : IBookService
         book.ISBN = bookDto.ISBN;
         book.PublishedDate = bookDto.PublishedDate;
         book.Stock = bookDto.Stock;
+        book.Price = bookDto.Price;
         book.GenreId = bookDto.GenreId;
         book.AuthorId = bookDto.AuthorId;
+        book.CoverImageUrl = bookDto.CoverImageUrl;
 
         await _context.SaveChangesAsync();
 
@@ -113,10 +123,13 @@ public class BookService : IBookService
             ISBN = book.ISBN,
             PublishedDate = book.PublishedDate,
             Stock = book.Stock,
+            Price = book.Price,
             AuthorId = book.AuthorId,
             AuthorName = $"{author?.FirstName} {author?.LastName}",
             GenreId = book.GenreId,
-            GenreName = genre?.Name ?? ""
+            GenreName = genre?.Name ?? "",
+            CoverImageUrl = book.CoverImageUrl
+
         };
     }
 
