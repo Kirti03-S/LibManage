@@ -42,6 +42,13 @@ else
 
     <h4>Total: @Model.Sum(i => i.Price * i.Stock).ToString("C")</h4>
 
-    <a asp-controller="Order" asp-action="PlaceOrder" class="btn btn-success">Place Order</a>
+
+    <form asp-controller="Order" asp-action="PlaceOrder" method="post">
+        <button type="submit" class="btn btn-success">
+            Place Order
+        </button>
+    </form>
+
+
 }
 

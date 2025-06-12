@@ -26,6 +26,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
 builder.Services.AddScoped<CartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<ICartService, CartService>();
 
 
 builder.Services.AddHttpContextAccessor();

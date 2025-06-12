@@ -1,5 +1,6 @@
 ﻿using LibManage.Models;
 using LibManage.Services.Interfaces;
+using LibManage.ViewModels;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 
@@ -8,32 +9,43 @@ namespace LibManage.Services
     public class CartService : ICartService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IBookService _bookService;
         private const string CartSessionKey = "CartItems";
 
-        public CartService(IHttpContextAccessor httpContextAccessor)
+        public CartService(IHttpContextAccessor httpContextAccessor, IBookService bookService)
         {
             _httpContextAccessor = httpContextAccessor;
+            _bookService = bookService;
         }
 
-        public List<CartItem> GetCartItems()
+        public List<CartItemViewModel> GetCartItems()
         {
             var session = _httpContextAccessor.HttpContext.Session;
             var cartJson = session.GetString(CartSessionKey);
-            return string.IsNullOrEmpty(cartJson) ? new List<CartItem>() : JsonSerializer.Deserialize<List<CartItem>>(cartJson);
+            return string.IsNullOrEmpty(cartJson)
+                ? new List<CartItemViewModel>()
+                : JsonSerializer.Deserialize<List<CartItemViewModel>>(cartJson)!;
         }
 
-        public void AddToCart(CartItem item)
+        public async Task AddToCartAsync(int bookId)
         {
+            var book = await _bookService.GetBookByIdAsync(bookId);
+            if (book == null) return;
+
             var cart = GetCartItems();
-            var existingItem = cart.FirstOrDefault(x => x.BookId == item.BookId);
+            var existingItem = cart.FirstOrDefault(x => x.BookId == bookId);
             if (existingItem != null)
-            {
-                existingItem.Stock += item.Stock;
-            }
+                existingItem.Stock++;
             else
-            {
-                cart.Add(item);
-            }
+                cart.Add(new CartItemViewModel
+                {
+                    BookId = book.Id,
+                    Title = book.Title,
+                    Price = book.Price,
+                    CoverImageUrl = book.CoverImageUrl,
+                    Stock = 1
+                });
+
             SaveCart(cart);
         }
 
@@ -41,7 +53,8 @@ namespace LibManage.Services
         {
             var cart = GetCartItems();
             var item = cart.FirstOrDefault(x => x.BookId == bookId);
-            if (item != null) cart.Remove(item);
+            if (item != null)
+                cart.Remove(item);
             SaveCart(cart);
         }
 
@@ -50,11 +63,10 @@ namespace LibManage.Services
             _httpContextAccessor.HttpContext.Session.Remove(CartSessionKey);
         }
 
-        private void SaveCart(List<CartItem> cart)
+        private void SaveCart(List<CartItemViewModel> cart)
         {
             var cartJson = JsonSerializer.Serialize(cart);
             _httpContextAccessor.HttpContext.Session.SetString(CartSessionKey, cartJson);
         }
     }
 }
-

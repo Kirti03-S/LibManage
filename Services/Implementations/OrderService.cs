@@ -39,6 +39,7 @@ namespace LibManage.Services
                 order.Items.Add(new OrderItem
                 {
                     BookId = item.BookId,
+                    BookTitle = book.Title, // ✅ set BookTitle manually here
                     Stock = item.Stock,
                     Price = item.Price
                 });
@@ -54,8 +55,7 @@ namespace LibManage.Services
         {
             return await _context.Orders
                 .Where(o => o.UserId == userId)
-                .Include(o => o.Items)
-                .ThenInclude(i => i.BookTitle)
+                .Include(o => o.Items) // ✅ valid
                 .Select(o => new OrderViewModel
                 {
                     OrderId = o.Id,
@@ -63,7 +63,7 @@ namespace LibManage.Services
                     TotalAmount = o.TotalAmount,
                     Items = o.Items.Select(i => new OrderItemViewModel
                     {
-                        BookTitle = i.BookTitle,
+                        BookTitle = i.BookTitle, // ✅ use stored title
                         Stock = i.Stock,
                         Price = i.Price
                     }).ToList()
@@ -74,8 +74,7 @@ namespace LibManage.Services
         public async Task<List<OrderViewModel>> GetAllOrdersAsync()
         {
             return await _context.Orders
-                .Include(o => o.Items)
-                .ThenInclude(i => i.BookTitle)
+                .Include(o => o.Items) // ✅ valid
                 .Select(o => new OrderViewModel
                 {
                     OrderId = o.Id,

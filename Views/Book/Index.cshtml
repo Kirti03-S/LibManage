@@ -41,8 +41,8 @@
                             <td>@book.ISBN</td>
                             <td>@book.PublishedDate.ToShortDateString()</td>
                             <td>@book.Stock</td>
-                            <td>@book.Author.FirstName + Abook.Author.LastName</td> 
-                            <td>@book.Genre.Name</td> 
+                            <td>@book.Author.FirstName + Abook.Author.LastName</td>
+                            <td>@book.Genre.Name</td>
                             <td>
                                 <a asp-action="Edit" asp-route-id="@book.Id" class="btn btn-sm btn-warning me-1">Edit</a>
                                 <a asp-action="Details" asp-route-id="@book.Id" class="btn btn-sm btn-info me-1">Details</a>
