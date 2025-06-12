@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LibManage.Controllers
 {
-    [Authorize(Roles = "User,Admin")] // Allow only logged-in users (can include Admin for flexibility)
+    [Authorize(Roles = "User,Admin")]
     public class CatalogController : Controller
     {
         private readonly IBookService _bookService;
@@ -27,7 +27,8 @@ namespace LibManage.Controllers
                 AuthorName = b.AuthorName,
                 GenreName = b.GenreName,
                 Price = b.Price,
-                CoverImageUrl = b.CoverImageUrl
+                CoverImageUrl = b.CoverImageUrl,
+                Stock=b.Stock 
             }).ToList();
 
             return View(viewModel);

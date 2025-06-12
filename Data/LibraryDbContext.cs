@@ -14,7 +14,9 @@ namespace LibManage.Data
         public DbSet<Review> Reviews { get; set; }
         public DbSet<LendingRecord> LendingRecords => Set<LendingRecord>();
         public DbSet<User> Users { get; set; }
-
+        public DbSet<Order> Orders { get; set; }
+        
+      
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

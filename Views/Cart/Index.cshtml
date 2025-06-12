@@ -1,0 +1,47 @@
+﻿@model List<LibManage.ViewModels.CartItemViewModel>
+@{
+    ViewData["Title"] = "My Cart";
+}
+
+<h2>My Cart</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <p>Your cart is empty.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Book</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                Console.WriteLine(item.CoverImageUrl);
+                <tr class="align-middle">
+                    <td><img src="@item.CoverImageUrl" height="100px" width="100px" class="rounded" alt="item image" /></td>
+                    <td>@item.Title</td>
+                    <td>@item.Price.ToString("C")</td>
+                    <td>@item.Stock</td>
+                    <td>@((item.Price * item.Stock).ToString("C"))</td>
+                    <td>
+                        <a asp-action="RemoveFromCart" asp-route-id="@item.BookId" class="btn btn-danger btn-sm">Remove</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>Total: @Model.Sum(i => i.Price * i.Stock).ToString("C")</h4>
+
+    <a asp-controller="Order" asp-action="PlaceOrder" class="btn btn-success">Place Order</a>
+}
+

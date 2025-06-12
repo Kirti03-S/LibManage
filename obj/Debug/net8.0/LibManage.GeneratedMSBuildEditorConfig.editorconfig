@@ -60,12 +60,24 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Coditas-Admin/Desktop/asp/LibManage/LibManage/Views/Cart/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Coditas-Admin/Desktop/asp/LibManage/LibManage/Views/Catalog/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0YWxvZ1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Coditas-Admin/Desktop/asp/LibManage/LibManage/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Coditas-Admin/Desktop/asp/LibManage/LibManage/Views/Order/AllOrders.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcQWxsT3JkZXJzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Coditas-Admin/Desktop/asp/LibManage/LibManage/Views/Order/MyOrders.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcTXlPcmRlcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Coditas-Admin/Desktop/asp/LibManage/LibManage/Views/Shared/BookList.cshtml]

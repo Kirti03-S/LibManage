@@ -1,27 +1,36 @@
 using LibManage.Data;
 using LibManage.Models.LibManage.Models;
 using LibManage.Repositories;
-using LibManage.Repositories;
+using LibManage.Services;
+//using LibManage.Services.Implementations;
+
+
+//using LibManage.Services.Implementations;
 using LibManage.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Services.AddControllers(); // For API controllers
-//builder.Services.AddEndpointsApiExplorer();
-////builder.Services.AddSwaggerGen();
-
-// Add services to the container.
-builder.Services.AddRazorPages();
-
 builder.Services.AddDbContext<LibraryDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
+// Add services to the container.
+builder.Services.AddRazorPages();
+builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSession();
+builder.Services.AddScoped<CartService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSession();
+
 
 
 builder.Services.AddAuthentication("CookieAuth")
@@ -41,10 +50,14 @@ var app = builder.Build();
 
 
 
+app.UseSession();
+
+
+
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

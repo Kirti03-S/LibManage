@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LibManage.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class BookController : Controller
     {
         private readonly IBookService _bookService;
@@ -95,7 +95,6 @@ namespace LibManage.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Book/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
             var book = await _bookService.GetBookByIdAsync(id);
@@ -120,7 +119,7 @@ namespace LibManage.Controllers
             return View(viewModel);
         }
 
-        // POST: Book/Edit/5
+
         [HttpPost]
         public async Task<IActionResult> Edit(int id, BookViewModel vm)
         {
@@ -152,7 +151,7 @@ namespace LibManage.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Book/Delete/5
+    
         public async Task<IActionResult> Delete(int id)
         {
             var book = await _bookService.GetBookByIdAsync(id);
@@ -173,8 +172,9 @@ namespace LibManage.Controllers
             return View(viewModel);
         }
 
-        // POST: Book/Delete/5
+        
         [HttpPost, ActionName("Delete")]
+        
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _bookService.DeleteBookAsync(id);
@@ -203,28 +203,28 @@ namespace LibManage.Controllers
             return View(viewModel);
         }
 
-        [Authorize(Roles = "User,Admin")]
-        public async Task<IActionResult> Catalog()
-        {
-            var books = await _bookService.GetAllBooksAsync();
+        //[Authorize(Roles = "User,Admin")]
+        //public async Task<IActionResult> Catalog()
+        //{
+        //    var books = await _bookService.GetAllBooksAsync();
 
-            var viewModel = books.Select(b => new BookViewModel
-            {
-                Id = b.Id,
-                Title = b.Title,
-                ISBN = b.ISBN,
-                PublishedDate = b.PublishedDate,
-                Stock = b.Stock,
-                Price = b.Price, // Make sure your Book entity has Price
-                CoverImageUrl = b.CoverImageUrl, // Image URL or path
-                GenreId = b.GenreId,
-                Genre = new Genre { Id = b.GenreId, Name = b.GenreName },
-                AuthorId = b.AuthorId,
-                Author = new Author { Id = b.AuthorId, FirstName = b.AuthorName }
-            }).ToList();
+        //    var viewModel = books.Select(b => new BookViewModel
+        //    {
+        //        Id = b.Id,
+        //        Title = b.Title,
+        //        ISBN = b.ISBN,
+        //        PublishedDate = b.PublishedDate,
+        //        Stock = b.Stock,
+        //        Price = b.Price, // Make sure your Book entity has Price
+        //        CoverImageUrl = b.CoverImageUrl, // Image URL or path
+        //        GenreId = b.GenreId,
+        //        Genre = new Genre { Id = b.GenreId, Name = b.GenreName },
+        //        AuthorId = b.AuthorId,
+        //        Author = new Author { Id = b.AuthorId, FirstName = b.AuthorName }
+        //    }).ToList();
 
-            return View(viewModel);
-        }
+        //    return View(viewModel);
+        //}
 
 
 

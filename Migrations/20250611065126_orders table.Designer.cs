@@ -4,6 +4,7 @@ using LibManage.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibManage.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    partial class LibraryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250611065126_orders table")]
+    partial class orderstable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,9 +93,6 @@ namespace LibManage.Migrations
                     b.Property<DateTime>("PublishedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
                     b.Property<int>("Stock")
                         .HasColumnType("int");
 
@@ -117,7 +117,6 @@ namespace LibManage.Migrations
                             ISBN = "978-0-553-80371-0",
                             Price = 0m,
                             PublishedDate = new DateTime(1951, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Quantity = 0,
                             Stock = 5,
                             Title = "Foundation"
                         },
@@ -129,7 +128,6 @@ namespace LibManage.Migrations
                             ISBN = "978-0-7475-3269-9",
                             Price = 0m,
                             PublishedDate = new DateTime(1997, 6, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Quantity = 0,
                             Stock = 10,
                             Title = "Harry Potter and the Sorcerer's Stone"
                         });
@@ -318,7 +316,7 @@ namespace LibManage.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Stock")
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

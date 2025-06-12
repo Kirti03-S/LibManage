@@ -10,6 +10,7 @@ public class Book
     public DateTime PublishedDate { get; set; }
     public int Stock { get; set; }
     public decimal Price { get; set; }
+    public int Quantity { get; set; } 
 
     // Foreign Keys
     public int GenreId { get; set; }

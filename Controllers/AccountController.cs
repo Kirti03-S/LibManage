@@ -64,7 +64,7 @@ namespace LibManage.Controllers
             };
 
             var passwordHasher = new PasswordHasher<User>();
-            user.Password = passwordHasher.HashPassword(user, model.Password); // ✅ Secure hashing
+            user.Password = passwordHasher.HashPassword(user, model.Password); 
 
             _context.Users.Add(user);
             _context.SaveChanges();
@@ -77,7 +77,6 @@ namespace LibManage.Controllers
         [HttpGet]
         public IActionResult Login() => View();
 
-        [HttpPost]
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
 
@@ -103,7 +102,7 @@ namespace LibManage.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, user.Role) // this must match the role you use in [Authorize(Roles = "X")]
+                new Claim(ClaimTypes.Role, user.Role) 
             };
 
             var identity = new ClaimsIdentity(claims, "CookieAuth");

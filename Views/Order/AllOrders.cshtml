@@ -1,0 +1,22 @@
+﻿@model List<LibManage.ViewModels.OrderViewModel>
+@{
+    ViewData["Title"] = "All Orders (Admin)";
+}
+
+<h2>All Orders</h2>
+
+@foreach (var order in Model)
+{
+    <div class="card my-3 p-3">
+        <h4>Order #@order.OrderId (User: @order.UserId)</h4>
+        <p><strong>Date:</strong> @order.OrderDate.ToShortDateString()</p>
+        <p><strong>Total:</strong> ₹@order.TotalAmount</p>
+        <ul>
+            @foreach (var item in order.Items)
+            {
+                <li>@item.BookTitle - @item.Stock x ₹@item.Price</li>
+            }
+        </ul>
+    </div>
+}
+

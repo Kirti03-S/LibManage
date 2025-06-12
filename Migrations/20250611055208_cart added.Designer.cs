@@ -4,6 +4,7 @@ using LibManage.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibManage.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    partial class LibraryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250611055208_cart added")]
+    partial class cartadded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,9 +93,6 @@ namespace LibManage.Migrations
                     b.Property<DateTime>("PublishedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
                     b.Property<int>("Stock")
                         .HasColumnType("int");
 
@@ -117,7 +117,6 @@ namespace LibManage.Migrations
                             ISBN = "978-0-553-80371-0",
                             Price = 0m,
                             PublishedDate = new DateTime(1951, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Quantity = 0,
                             Stock = 5,
                             Title = "Foundation"
                         },
@@ -129,7 +128,6 @@ namespace LibManage.Migrations
                             ISBN = "978-0-7475-3269-9",
                             Price = 0m,
                             PublishedDate = new DateTime(1997, 6, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Quantity = 0,
                             Stock = 10,
                             Title = "Harry Potter and the Sorcerer's Stone"
                         });
@@ -274,60 +272,6 @@ namespace LibManage.Migrations
                     b.ToTable("MembershipPlan");
                 });
 
-            modelBuilder.Entity("LibManage.Models.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("LibManage.Models.OrderItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("BookTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Stock")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("OrderItem");
-                });
-
             modelBuilder.Entity("LibManage.Models.Review", b =>
                 {
                     b.Property<int>("Id")
@@ -410,17 +354,6 @@ namespace LibManage.Migrations
                     b.Navigation("MembershipPlan");
                 });
 
-            modelBuilder.Entity("LibManage.Models.OrderItem", b =>
-                {
-                    b.HasOne("LibManage.Models.Order", "Order")
-                        .WithMany("Items")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("LibManage.Models.Review", b =>
                 {
                     b.HasOne("LibManage.Models.Book", "Book")
@@ -467,11 +400,6 @@ namespace LibManage.Migrations
             modelBuilder.Entity("LibManage.Models.MembershipPlan", b =>
                 {
                     b.Navigation("Members");
-                });
-
-            modelBuilder.Entity("LibManage.Models.Order", b =>
-                {
-                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }
