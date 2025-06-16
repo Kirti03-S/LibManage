@@ -4727,11 +4727,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Coditas-Admin\\Desktop\\asp\\LibManage\\LibManage\\LibManage.csproj",
+      "projectUniqueName": "C:\\Users\\Coditas-Admin\\Desktop\\asp\\LibManage1\\LibManage\\LibManage.csproj",
       "projectName": "LibManage",
-      "projectPath": "C:\\Users\\Coditas-Admin\\Desktop\\asp\\LibManage\\LibManage\\LibManage.csproj",
+      "projectPath": "C:\\Users\\Coditas-Admin\\Desktop\\asp\\LibManage1\\LibManage\\LibManage.csproj",
       "packagesPath": "C:\\Users\\Coditas-Admin.5737-LAP-0513\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Coditas-Admin\\Desktop\\asp\\LibManage\\LibManage\\obj\\",
+      "outputPath": "C:\\Users\\Coditas-Admin\\Desktop\\asp\\LibManage1\\LibManage\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

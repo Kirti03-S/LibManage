@@ -6,12 +6,24 @@
 
 <h2>Explore Book Catalog 📚</h2>
 
+<!-- ✅ Show messages (AddToCart feedback) -->
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
 <div class="row">
     @foreach (var book in Model)
     {
         <div class="col-md-4 mb-4">
             <div class="card h-100">
-                <img src="@book.CoverImageUrl" class="card-img-top" alt="Book Cover" style="height: 300px; object-fit: cover;" />
+                <img src="@book.CoverImageUrl" class="card-img-top" alt="Book Cover"
+                     style="height: 300px; object-fit: cover;" />
+
                 <div class="card-body">
                     <h5 class="card-title">@book.Title</h5>
                     <p class="card-text">
@@ -20,25 +32,33 @@
                         <strong>Price:</strong> ₹@book.Price<br />
                     </p>
                 </div>
+
                 <div class="card-footer text-center">
-                    
+                    @if (book.Stock > 0)
+                    {
+                        <form asp-controller="Cart" asp-action="AddToCart" asp-route-id="@book.Id" method="post">
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger fs-6">Out of Stock</span>
+                    }
+
+                    @* <!-- Optional: View Cart Button --> *@
+                    @* <a asp-controller="Cart" asp-action="Index" class="btn btn-outline-secondary mt-2"> *@
+                    @*     View Cart *@
+                    @* </a> *@
                 </div>
-
-
-                <!-- ✅ Add to Cart Button -->
-                <a asp-controller="Cart" asp-action="AddToCart" method="post" asp-route-id="@book.Id" class="btn btn-primary">
-                    Add to Cart
-                </a>
-
-                <!-- ✅ Optional: View Cart Button -->
-                <a asp-controller="Cart" asp-action="Index" class="btn btn-outline-secondary mt-2">
-                    View Cart
-                </a>
             </div>
         </div>
     }
 </div>
 
-<div class="mt-4 text-center">
-    <a asp-controller="Order" asp-action="Checkout" class="btn btn-success btn-lg">Place Order</a>
-</div>
+@* <!-- Optional: Place Order button at bottom --> *@
+@* @if (Model.Any(b => b.Stock > 0)) *@
+@* { *@
+@*     <div class="mt-4 text-center"> *@
+@*         <a asp-controller="Order" asp-action="Checkout" class="btn btn-success btn-lg">Place Order</a> *@
+@*     </div> *@
+@* } *@

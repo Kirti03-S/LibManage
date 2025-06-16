@@ -22,6 +22,7 @@ namespace LibManage.Services
 
             var order = new Order
             {
+
                 UserId = userId,
                 OrderDate = DateTime.Now,
                 Items = new List<OrderItem>(),
@@ -38,10 +39,12 @@ namespace LibManage.Services
 
                 order.Items.Add(new OrderItem
                 {
+                    CoverImageUrl = book.CoverImageUrl,
                     BookId = item.BookId,
                     BookTitle = book.Title, // ✅ set BookTitle manually here
                     Stock = item.Stock,
                     Price = item.Price
+
                 });
 
                 order.TotalAmount += item.Price * item.Stock;
@@ -55,15 +58,17 @@ namespace LibManage.Services
         {
             return await _context.Orders
                 .Where(o => o.UserId == userId)
-                .Include(o => o.Items) // ✅ valid
+                .Include(o => o.Items) 
                 .Select(o => new OrderViewModel
                 {
+                    CoverImageUrl = o.CoverImageUrl,
                     OrderId = o.Id,
                     OrderDate = o.OrderDate,
                     TotalAmount = o.TotalAmount,
                     Items = o.Items.Select(i => new OrderItemViewModel
                     {
-                        BookTitle = i.BookTitle, // ✅ use stored title
+                        BookCoverImageUrl = i.CoverImageUrl,
+                        BookTitle = i.BookTitle, 
                         Stock = i.Stock,
                         Price = i.Price
                     }).ToList()
@@ -77,12 +82,14 @@ namespace LibManage.Services
                 .Include(o => o.Items) // ✅ valid
                 .Select(o => new OrderViewModel
                 {
+                    CoverImageUrl = o.CoverImageUrl,
                     OrderId = o.Id,
                     OrderDate = o.OrderDate,
                     TotalAmount = o.TotalAmount,
                     UserId = o.UserId,
                     Items = o.Items.Select(i => new OrderItemViewModel
                     {
+                        BookCoverImageUrl = i.CoverImageUrl,
                         BookTitle = i.BookTitle,
                         Stock = i.Stock,
                         Price = i.Price

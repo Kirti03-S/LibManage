@@ -22,14 +22,60 @@ namespace LibManage.Controllers
 
         public async Task<IActionResult> AddToCart(int id)
         {
-            await _cartService.AddToCartAsync(id);
-            return RedirectToAction("Index");
+            try
+            {
+                await _cartService.AddToCartAsync(id);
+                TempData["Success"] = "Book added to cart!";
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["Error"] = ex.Message;
+            }
+
+            return RedirectToAction("ItemAdded", new { id });
         }
+
 
         public IActionResult RemoveFromCart(int id)
         {
             _cartService.RemoveFromCart(id);
             return RedirectToAction("Index");
         }
+
+        public IActionResult ItemAdded(int id)
+        {
+            var cart = _cartService.GetCartItems();
+            var item = cart.FirstOrDefault(x => x.BookId == id);
+            if (item == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View("ItemAdded", item);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> IncreaseQuantity(int id)
+        {
+            try
+            {
+                await _cartService.IncreaseQuantityAsync(id);
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["Error"] = ex.Message;
+            }
+
+            return RedirectToAction("ItemAdded", new { id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DecreaseQuantity(int id)
+        {
+            await _cartService.DecreaseQuantityAsync(id);
+            return RedirectToAction("ItemAdded", new { id });
+        }
+
+
     }
 }

@@ -1,0 +1,43 @@
+﻿@model LibManage.ViewModels.CartItemViewModel
+
+@{
+    ViewData["Title"] = "Item Added to Cart";
+}
+
+<div class="container mt-5">
+    <div class="alert alert-success text-center">
+        ✅ <strong>@Model.Title</strong> has been added to your cart.
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <img src="@Model.CoverImageUrl" class="card-img-top" alt="Book cover" style="height: 300px; object-fit: cover;">
+                <div class="card-body text-center">
+                    <h5 class="card-title">@Model.Title</h5>
+                    <p class="card-text">Price: ₹@Model.Price</p>
+                    <p class="card-text">Quantity in Cart: @Model.Stock</p>
+
+                    <form method="post" asp-action="AddToCart" asp-route-id="@Model.BookId" class="d-inline">
+                        <button type="submit" class="btn btn-outline-primary">+ Increase Quantity</button>
+                    </form>
+
+                    <form method="post" asp-action="DecreaseQuantity" asp-route-id="@Model.BookId" class="d-inline">
+                        <button type="submit" class="btn btn-outline-secondary">- Decrease Quantity</button>
+                    </form>
+
+                    <div class="mt-3 d-flex justify-content-between w-50 mx-auto ">
+                        <a asp-controller="Cart" asp-action="Index" class="btn btn-success">🛒 View Cart</a>
+                        <form asp-controller="Order" asp-action="PlaceOrder" method="post">
+                            <button type="submit" class="btn btn-warning">✅ Place Order</button>
+                        </form>
+                    </div>
+
+                    <div class="mt-3">
+                        <a asp-controller="Catalog" asp-action="Index" class="btn btn-link">⬅️ Continue Shopping</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

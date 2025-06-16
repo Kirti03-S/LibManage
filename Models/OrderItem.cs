@@ -10,7 +10,7 @@ namespace LibManage.Models
         public string BookTitle { get; set; } = string.Empty;
         public decimal Price { get; set; }
         public int Stock { get; set; }
-
+        public string CoverImageUrl { get; set; }
         public Order Order { get; set; }
     }
 }

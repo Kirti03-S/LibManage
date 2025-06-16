@@ -30,13 +30,21 @@ namespace LibManage.Services
         public async Task AddToCartAsync(int bookId)
         {
             var book = await _bookService.GetBookByIdAsync(bookId);
-            if (book == null) return;
+            if (book == null || book.Stock <= 0)
+                throw new InvalidOperationException("Book not found or is out of stock.");
 
             var cart = GetCartItems();
             var existingItem = cart.FirstOrDefault(x => x.BookId == bookId);
+
             if (existingItem != null)
-                existingItem.Stock++;
+            {
+                if (existingItem.Stock >= book.Stock)
+                    throw new InvalidOperationException("Not enough stock available.");
+
+                existingItem.Stock++; // Increment cart quantity
+            }
             else
+            {
                 cart.Add(new CartItemViewModel
                 {
                     BookId = book.Id,
@@ -45,9 +53,11 @@ namespace LibManage.Services
                     CoverImageUrl = book.CoverImageUrl,
                     Stock = 1
                 });
+            }
 
             SaveCart(cart);
         }
+
 
         public void RemoveFromCart(int bookId)
         {
@@ -68,5 +78,39 @@ namespace LibManage.Services
             var cartJson = JsonSerializer.Serialize(cart);
             _httpContextAccessor.HttpContext.Session.SetString(CartSessionKey, cartJson);
         }
+
+        public async Task DecreaseQuantityAsync(int bookId)
+        {
+            var cart = GetCartItems();
+            var item = cart.FirstOrDefault(x => x.BookId == bookId);
+            if (item != null)
+            {
+                item.Stock--;
+                if (item.Stock <= 0)
+                    cart.Remove(item);
+            }
+            SaveCart(cart);
+        }
+
+        public async Task IncreaseQuantityAsync(int bookId)
+        {
+            var book = await _bookService.GetBookByIdAsync(bookId);
+            if (book == null)
+                throw new InvalidOperationException("Book not found.");
+
+            var cart = GetCartItems();
+            var item = cart.FirstOrDefault(x => x.BookId == bookId);
+
+            if (item != null)
+            {
+                if (item.Stock >= book.Stock)
+                    throw new InvalidOperationException("No more stock available.");
+
+                item.Stock++;
+            }
+
+            SaveCart(cart);
+        }
+
     }
 }

@@ -6,6 +6,7 @@
         public string? UserId { get; set; }
         public DateTime OrderDate { get; set; }
         public decimal TotalAmount { get; set; }
+        public string CoverImageUrl { get; set; }
         public List<OrderItemViewModel> Items { get; set; }
     }
 }

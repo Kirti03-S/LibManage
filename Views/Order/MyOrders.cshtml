@@ -3,20 +3,46 @@
     ViewData["Title"] = "My Orders";
 }
 
-<h2>My Orders</h2>
+<h2 class="mb-4">📦 My Orders</h2>
 
-@foreach (var order in Model)
+@if (!Model.Any())
 {
-    <div class="card my-3 p-3">
-        <h4>Order #@order.OrderId</h4>
-        <p><strong>Date:</strong> @order.OrderDate.ToShortDateString()</p>
-        <p><strong>Total:</strong> ₹@order.TotalAmount</p>
-        <ul>
-            @foreach (var item in order.Items)
-            {
-                <li>@item.BookTitle - @item.Stock x ₹@item.Price</li>
-            }
-        </ul>
-    </div>
+    <div class="alert alert-info">You have not placed any orders yet.</div>
 }
+else
+{
+    foreach (var order in Model)
+    {
+        <div class="card mb-4 shadow-sm border-primary">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <span><strong>Order #@order.OrderId</strong></span>
+                <span class="badge bg-light text-dark">Placed on: @order.OrderDate.ToString("dd MMM yyyy")</span>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Total Amount: <span class="text-success">₹@order.TotalAmount</span></h5>
+                <hr />
+                <h6>Items:</h6>
 
+                @foreach (var item in order.Items)
+                {
+                    <div class="row mb-3 align-items-center border-bottom pb-2">
+                        <div class="col-md-2 col-4">
+                            <img src="@item.BookCoverImageUrl" alt="@item.BookTitle" class="img-fluid rounded shadow-sm" />
+                        </div>
+                        <div class="col-md-7 col-8">
+                            <h6 class="mb-1">@item.BookTitle</h6>
+                            <p class="mb-0 text-muted">
+                                Quantity: <strong>@item.Stock</strong> × ₹<strong>@item.Price</strong>
+                            </p>
+                        </div>
+                        <div class="col-md-3 text-end">
+                            <span class="badge bg-success fs-6">
+                                ₹@(item.Stock * item.Price)
+                            </span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+}
