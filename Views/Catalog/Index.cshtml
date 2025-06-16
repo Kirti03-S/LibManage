@@ -1,4 +1,5 @@
-﻿@model IEnumerable<LibManage.ViewModels.BookCatalogViewModel>
+﻿@model LibManage.ViewModels.PagedBookCatalogViewModel
+
 
 @{
     ViewData["Title"] = "Explore Book Catalog";
@@ -17,7 +18,7 @@
 }
 
 <div class="row">
-    @foreach (var book in Model)
+    @foreach (var book in Model.Books)
     {
         <div class="col-md-4 mb-4">
             <div class="card h-100">
@@ -44,21 +45,23 @@
                     {
                         <span class="badge bg-danger fs-6">Out of Stock</span>
                     }
-
-                    @* <!-- Optional: View Cart Button --> *@
-                    @* <a asp-controller="Cart" asp-action="Index" class="btn btn-outline-secondary mt-2"> *@
-                    @*     View Cart *@
-                    @* </a> *@
                 </div>
             </div>
         </div>
     }
 </div>
 
-@* <!-- Optional: Place Order button at bottom --> *@
-@* @if (Model.Any(b => b.Stock > 0)) *@
-@* { *@
-@*     <div class="mt-4 text-center"> *@
-@*         <a asp-controller="Order" asp-action="Checkout" class="btn btn-success btn-lg">Place Order</a> *@
-@*     </div> *@
-@* } *@
+<!-- ✅ Pagination Controls -->
+@if (Model.TotalPages > 1)
+{
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}

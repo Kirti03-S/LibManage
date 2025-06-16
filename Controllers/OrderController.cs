@@ -37,9 +37,7 @@ namespace LibManage.Controllers
             {
                 await _orderService.PlaceOrderAsync(userId, cartItems);
 
-                HttpContext.Session.Remove("CartItems"); // ✅ Corrected key to match your code
-
-                // ✅ Prepare confirmation data for the success view
+                HttpContext.Session.Remove("CartItems"); 
                 var orderSummary = cartItems.Select(item => new OrderSuccessViewModel
                 {
                     Title = item.Title,

@@ -15,23 +15,30 @@ namespace LibManage.Controllers
             _bookService = bookService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            var books = await _bookService.GetAllBooksAsync();
+            int pageSize = 6;
+            var (books,totalCount) = await _bookService.GetPagedBooksAsync(page, pageSize);
 
-            var viewModel = books.Select(b => new BookCatalogViewModel
+            var viewModel = new PagedBookCatalogViewModel
             {
-                Id = b.Id,
-                Title = b.Title,
-                ISBN = b.ISBN,
-                AuthorName = b.AuthorName,
-                GenreName = b.GenreName,
-                Price = b.Price,
-                CoverImageUrl = b.CoverImageUrl,
-                Stock=b.Stock 
-            }).ToList();
+                Books = books.Select(b => new BookCatalogViewModel
+                {
+                    Id = b.Id,
+                    Title = b.Title,
+                    ISBN = b.ISBN,
+                    AuthorName = b.AuthorName,
+                    GenreName = b.GenreName,
+                    Price = b.Price,
+                    CoverImageUrl = b.CoverImageUrl,
+                    Stock = b.Stock
+                }).ToList(),
+                CurrentPage = page,
+                TotalPages = (int)Math.Ceiling((double)totalCount / pageSize)
+            };
 
             return View(viewModel);
         }
+
     }
 }

@@ -142,4 +142,38 @@ public class BookService : IBookService
         await _context.SaveChangesAsync();
         return true;
     }
+
+    public async Task<(List<BookDto> Books, int TotalCount)> GetPagedBooksAsync(int pageNumber, int pageSize)
+    {
+        var query = _context.Books
+            .Include(b => b.Author)
+            .Include(b => b.Genre)
+            .AsQueryable();
+
+        var totalCount = await query.CountAsync();
+
+        var books = await query
+            .OrderBy(b => b.Title)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .Select(b => new BookDto
+            {
+                Id = b.Id,
+                Title = b.Title,
+                ISBN = b.ISBN,
+                PublishedDate = b.PublishedDate,
+                Stock = b.Stock,
+                Price = b.Price,
+                AuthorId = b.AuthorId,
+                AuthorName = $"{b.Author.FirstName} {b.Author.LastName}",
+                GenreId = b.GenreId,
+                GenreName = b.Genre.Name,
+                CoverImageUrl = b.CoverImageUrl
+            })
+            .ToListAsync();
+
+        return (books, totalCount);
+    }
+
+
 }

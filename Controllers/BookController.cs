@@ -203,31 +203,6 @@ namespace LibManage.Controllers
             return View(viewModel);
         }
 
-        //[Authorize(Roles = "User,Admin")]
-        //public async Task<IActionResult> Catalog()
-        //{
-        //    var books = await _bookService.GetAllBooksAsync();
-
-        //    var viewModel = books.Select(b => new BookViewModel
-        //    {
-        //        Id = b.Id,
-        //        Title = b.Title,
-        //        ISBN = b.ISBN,
-        //        PublishedDate = b.PublishedDate,
-        //        Stock = b.Stock,
-        //        Price = b.Price, // Make sure your Book entity has Price
-        //        CoverImageUrl = b.CoverImageUrl, // Image URL or path
-        //        GenreId = b.GenreId,
-        //        Genre = new Genre { Id = b.GenreId, Name = b.GenreName },
-        //        AuthorId = b.AuthorId,
-        //        Author = new Author { Id = b.AuthorId, FirstName = b.AuthorName }
-        //    }).ToList();
-
-        //    return View(viewModel);
-        //}
-
-
-
-
+       
     }
 }
