@@ -15,12 +15,38 @@ namespace LibManage.Data
         public DbSet<LendingRecord> LendingRecords => Set<LendingRecord>();
         public DbSet<User> Users { get; set; }
         public DbSet<Order> Orders { get; set; }
-        
-      
+        public DbSet<Member> Members { get; set; }
+        public DbSet<MembershipPlan> MembershipPlans { get; set; }
+        public DbSet<MemberBook> MemberBooks { get; set; }
+        public DbSet<MembershipRequest> MembershipRequests { get; set; }
+
+
+
+
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<MemberBook>()
+        .HasKey(mb => new { mb.MemberId, mb.BookId });
+
+            modelBuilder.Entity<MemberBook>()
+                .HasOne(mb => mb.Member)
+                .WithMany(m => m.MemberBooks)
+                .HasForeignKey(mb => mb.MemberId);
+
+            modelBuilder.Entity<MemberBook>()
+                .HasOne(mb => mb.Book)
+                .WithMany(b => b.MemberBooks)
+                .HasForeignKey(mb => mb.BookId);
+
+            modelBuilder.Entity<Member>()
+                .HasMany(m => m.SelectedBooks)
+                .WithMany(); // optional: .WithMany(b => b.Members)
+
 
             // Seed Genres
             modelBuilder.Entity<Genre>().HasData(

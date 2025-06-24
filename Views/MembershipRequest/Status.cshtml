@@ -1,0 +1,26 @@
+﻿@model LibManage.DTOs.MembershipRequest.MembershipRequestViewModel
+@{
+    ViewData["Title"] = "Membership Status";
+}
+
+<h2>📋 Membership Request Status</h2>
+
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <div class="alert alert-info">@ViewBag.Message</div>
+}
+
+<div class="card mt-3 p-3">
+    <p><strong>Username:</strong> @Model.UserEmail</p>
+    <p><strong>Plan:</strong> @Model.PlanName</p>
+    <p><strong>Status:</strong> @Model.Status</p>
+    <p><strong>Requested On:</strong> @Model.RequestedOn.ToString("dd MMM yyyy")</p>
+
+    <p><strong>Selected Books:</strong></p>
+    <ul>
+        @foreach (var book in Model.BookTitles)
+        {
+            <li>@book</li>
+        }
+    </ul>
+</div>

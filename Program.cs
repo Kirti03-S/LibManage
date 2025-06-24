@@ -1,8 +1,9 @@
 using LibManage.Data;
 using LibManage.Models.LibManage.Models;
 using LibManage.Repositories;
+using LibManage.Repositories.Interfaces;
 using LibManage.Services;
-//using LibManage.Services.Implementations;
+using LibManage.Services;
 
 
 //using LibManage.Services.Implementations;
@@ -27,6 +28,28 @@ builder.Services.AddSession();
 builder.Services.AddScoped<CartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IMemberService, MemberService>();
+builder.Services.AddScoped<IMemberRepository, MemberRepository>();
+builder.Services.AddScoped<IMembershipPlanService, MembershipPlanService>();
+builder.Services.AddScoped<IMembershipPlanRepository, MembershipPlanRepository>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+// Repositories
+builder.Services.AddScoped<ILendingRecordRepository, LendingRecordRepository>();
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+
+// Services
+builder.Services.AddScoped<ILendingRecordService, LendingRecordService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
+
+builder.Services.AddScoped<IMembershipRequestService, MembershipRequestService>();
+builder.Services.AddScoped<IMemberRepository, MemberRepository>();
+
+builder.Services.AddScoped<IMembershipRequestService, MembershipRequestService>();
+builder.Services.AddScoped<IMemberRepository, MemberRepository>();
+
+
+
 
 
 builder.Services.AddHttpContextAccessor();
@@ -39,6 +62,13 @@ builder.Services.AddAuthentication("CookieAuth")
     {
         options.LoginPath = "/Account/Login";
         options.AccessDeniedPath = "/Home/Index";
+
+        //  Redirect to dashboard after successful login
+        options.Events.OnRedirectToReturnUrl = context =>
+        {
+            context.Response.Redirect("/Dashboard");
+            return Task.CompletedTask;
+        };
     });
 
 builder.Services.AddAuthorization();

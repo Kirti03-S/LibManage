@@ -12,5 +12,11 @@ public class Member
 
     public ICollection<LendingRecord>? LendingRecords { get; set; }
     public ICollection<Review>? Reviews { get; set; }
+    public ICollection<MemberBook>? MemberBooks { get; set; }
+    public ICollection<Book> SelectedBooks { get; set; } = new List<Book>();
+
+
+
+
 }
 

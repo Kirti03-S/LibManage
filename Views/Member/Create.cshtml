@@ -1,0 +1,25 @@
+﻿@model LibManage.DTOs.Member.CreateMemberDto
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MembershipPlanId"></label>
+        <select asp-for="MembershipPlanId" asp-items="Model.MembershipPlans" class="form-control">
+            <option value="">-- Select Plan --</option>
+        </select>
+        <span asp-validation-for="MembershipPlanId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>

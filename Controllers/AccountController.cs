@@ -113,7 +113,7 @@ namespace LibManage.Controllers
             await HttpContext.SignInAsync("CookieAuth", principal);
 
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Dashboard");
         }
 
 

@@ -4,6 +4,7 @@ using LibManage.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibManage.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    partial class LibraryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250617095605_AddMembershipPlanToDb")]
+    partial class AddMembershipPlanToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace LibManage.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("BookMember", b =>
-                {
-                    b.Property<int>("MemberId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SelectedBooksId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MemberId", "SelectedBooksId");
-
-                    b.HasIndex("SelectedBooksId");
-
-                    b.ToTable("BookMember");
-                });
 
             modelBuilder.Entity("LibManage.Models.Author", b =>
                 {
@@ -99,9 +87,6 @@ namespace LibManage.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("MembershipRequestId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -123,8 +108,6 @@ namespace LibManage.Migrations
                     b.HasIndex("AuthorId");
 
                     b.HasIndex("GenreId");
-
-                    b.HasIndex("MembershipRequestId");
 
                     b.ToTable("Books");
 
@@ -271,21 +254,6 @@ namespace LibManage.Migrations
                     b.ToTable("Members");
                 });
 
-            modelBuilder.Entity("LibManage.Models.MemberBook", b =>
-                {
-                    b.Property<int>("MemberId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MemberId", "BookId");
-
-                    b.HasIndex("BookId");
-
-                    b.ToTable("MemberBooks");
-                });
-
             modelBuilder.Entity("LibManage.Models.MembershipPlan", b =>
                 {
                     b.Property<int>("Id")
@@ -403,50 +371,6 @@ namespace LibManage.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("MembershipRequest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("MembershipPlanId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("RequestedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MembershipPlanId");
-
-                    b.ToTable("MembershipRequests");
-                });
-
-            modelBuilder.Entity("BookMember", b =>
-                {
-                    b.HasOne("LibManage.Models.Member", null)
-                        .WithMany()
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LibManage.Models.Book", null)
-                        .WithMany()
-                        .HasForeignKey("SelectedBooksId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("LibManage.Models.Book", b =>
                 {
                     b.HasOne("LibManage.Models.Author", "Author")
@@ -460,10 +384,6 @@ namespace LibManage.Migrations
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("MembershipRequest", null)
-                        .WithMany("SelectedBooks")
-                        .HasForeignKey("MembershipRequestId");
 
                     b.Navigation("Author");
 
@@ -500,25 +420,6 @@ namespace LibManage.Migrations
                     b.Navigation("MembershipPlan");
                 });
 
-            modelBuilder.Entity("LibManage.Models.MemberBook", b =>
-                {
-                    b.HasOne("LibManage.Models.Book", "Book")
-                        .WithMany("MemberBooks")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LibManage.Models.Member", "Member")
-                        .WithMany("MemberBooks")
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("Member");
-                });
-
             modelBuilder.Entity("LibManage.Models.OrderItem", b =>
                 {
                     b.HasOne("LibManage.Models.Order", "Order")
@@ -549,17 +450,6 @@ namespace LibManage.Migrations
                     b.Navigation("Member");
                 });
 
-            modelBuilder.Entity("MembershipRequest", b =>
-                {
-                    b.HasOne("LibManage.Models.MembershipPlan", "MembershipPlan")
-                        .WithMany()
-                        .HasForeignKey("MembershipPlanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MembershipPlan");
-                });
-
             modelBuilder.Entity("LibManage.Models.Author", b =>
                 {
                     b.Navigation("Books");
@@ -568,8 +458,6 @@ namespace LibManage.Migrations
             modelBuilder.Entity("LibManage.Models.Book", b =>
                 {
                     b.Navigation("LendingRecords");
-
-                    b.Navigation("MemberBooks");
 
                     b.Navigation("Reviews");
                 });
@@ -583,8 +471,6 @@ namespace LibManage.Migrations
                 {
                     b.Navigation("LendingRecords");
 
-                    b.Navigation("MemberBooks");
-
                     b.Navigation("Reviews");
                 });
 
@@ -596,11 +482,6 @@ namespace LibManage.Migrations
             modelBuilder.Entity("LibManage.Models.Order", b =>
                 {
                     b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("MembershipRequest", b =>
-                {
-                    b.Navigation("SelectedBooks");
                 });
 #pragma warning restore 612, 618
         }

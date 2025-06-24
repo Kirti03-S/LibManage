@@ -1,0 +1,30 @@
+﻿@model List<LibManage.DTOs.MembershipPlan.MembershipPlanDto>
+
+<h2>Membership Plans</h2>
+<a asp-action="Create" class="btn btn-primary mb-2">Add New Plan</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Plan Name</th>
+            <th>Max Books</th>
+            <th>Duration (days)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var plan in Model)
+        {
+            <tr>
+                <td>@plan.PlanName</td>
+                <td>@plan.MaxBooksAllowed</td>
+                <td>@plan.DurationInDays</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@plan.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@plan.Id" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

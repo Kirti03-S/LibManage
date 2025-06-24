@@ -23,6 +23,8 @@ public class Book
     public ICollection<Review>? Reviews { get; set; }
     public ICollection<LendingRecord>? LendingRecords { get; set; }
     public string? CoverImageUrl { get; set; }
+    public ICollection<MemberBook>? MemberBooks { get; set; }
+
 
 }
 

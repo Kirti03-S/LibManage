@@ -1,0 +1,39 @@
+﻿@model List<MembershipRequest>
+
+<h2>Pending Requests</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Plan</th>
+            <th>Books</th>
+            <th>Requested On</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.UserEmail</td>
+                <td>@r.MembershipPlan?.PlanName</td>
+                <td>
+                    <ul>
+                        @foreach (var book in r.SelectedBooks)
+                        {
+                            <li>@book.Title</li>
+                        }
+                    </ul>
+                </td>
+                <td>@r.RequestedOn.ToShortDateString()</td>
+                <td>
+                    <form asp-action="Approve" method="post" asp-route-id="@r.Id">
+                        <button class="btn btn-success">Approve</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

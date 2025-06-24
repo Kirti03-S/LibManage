@@ -44,5 +44,10 @@ namespace LibManage.Repositories
             _context.Books.Remove(book);
             await _context.SaveChangesAsync();
         }
+        public async Task<List<Book>> GetBooksByIdsAsync(IEnumerable<int> ids)
+        {
+            return await _context.Books.Where(b => ids.Contains(b.Id)).ToListAsync();
+        }
+
     }
 }

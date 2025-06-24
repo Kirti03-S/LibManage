@@ -12,5 +12,7 @@ namespace LibManage.Repositories
         Task AddAsync(Book book);
         Task UpdateAsync(Book book);
         Task DeleteAsync(Book book);
+        Task<List<Book>> GetBooksByIdsAsync(IEnumerable<int> ids);
+
     }
 }

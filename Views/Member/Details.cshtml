@@ -1,0 +1,16 @@
+﻿@model LibManage.DTOs.Member.MemberDto
+
+@{
+    ViewData["Title"] = "Member Details";
+}
+
+<h2>Member Details</h2>
+
+<div class="card p-3">
+    <h4>@Model.Name</h4>
+    <p><strong>Email:</strong> @Model.Email</p>
+    <p><strong>Membership Plan:</strong> @Model.PlanName</p>
+</div>
+
+<a asp-action="Index" class="btn btn-secondary mt-3">Back to List</a>
+

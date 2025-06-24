@@ -7,7 +7,7 @@
 
 <h2>Explore Book Catalog 📚</h2>
 
-<!-- ✅ Show messages (AddToCart feedback) -->
+
 @if (TempData["Success"] != null)
 {
     <div class="alert alert-success">@TempData["Success"]</div>
@@ -51,7 +51,7 @@
     }
 </div>
 
-<!-- ✅ Pagination Controls -->
+<!--Pagination Controls -->
 @if (Model.TotalPages > 1)
 {
     <nav class="mt-4">

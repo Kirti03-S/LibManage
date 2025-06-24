@@ -1,0 +1,36 @@
+﻿@model List<LibManage.DTOs.Review.ReviewDto>
+@{
+    ViewData["Title"] = "Book Reviews";
+}
+
+<h2>Book Reviews</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Book</th>
+            <th>Member</th>
+            <th>Rating</th>
+            <th>Comment</th>
+            <th>Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var review in Model)
+        {
+            <tr>
+                <td>@review.BookTitle</td>
+                <td>@review.MemberName</td>
+                <td>@review.Rating</td>
+                <td>@review.Comment</td>
+                <td>@review.CreatedDate.ToShortDateString()</td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@review.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="Create" class="btn btn-primary">Add Review</a>
+

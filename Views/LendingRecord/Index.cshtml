@@ -1,0 +1,32 @@
+﻿@model List<LibManage.DTOs.LendingRecord.LendingRecordDto>
+@{
+    ViewData["Title"] = "Lending Records";
+}
+
+<h2>Lending Records</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Book</th>
+            <th>Member</th>
+            <th>Borrowed Date</th>
+            <th>Due Date</th>
+            <th>Returned Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var record in Model)
+        {
+            <tr>
+                <td>@record.BookTitle</td>
+                <td>@record.MemberName</td>
+                <td>@record.BorrowedDate.ToShortDateString()</td>
+                <td>@record.DueDate.ToShortDateString()</td>
+                <td>@(record.ReturnedDate?.ToShortDateString() ?? "Not Returned")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="Create" class="btn btn-primary">Add New Record</a>
+

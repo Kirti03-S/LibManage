@@ -25,18 +25,48 @@
                         <li class="nav-item">
                             <a class="nav-link active" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Book" asp-action="Index">📖 Book List</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Member" asp-action="Index">👥 Members</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="MembershipPlan" asp-action="Index">📋 Manage Membership Plans</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="LendingRecord" asp-action="Index">📋 Lending Records</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="MembershipRequestAdmin" asp-action="Index">Review Membership Requests</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="JoinMembership" asp-action="Index">💠 Join Membership</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Review" asp-action="Index">⭐ Reviews</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="MembershipRequest" asp-action="Status">Membership Status</a>
+                                </li>
+                            }
+                        }
+                        @if (User.Identity?.IsAuthenticated ?? false)
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="Book" asp-action="Index">📖 Book List</a>
+                                <a class="nav-link" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
                             </li>
                         }
-                        @* <li class="nav-item"> *@
-                        @*     <a class="nav-link text-light" asp-controller="Account" asp-action="Register">Register</a> *@
-                        @* </li> *@
-                        @* <li class="nav-item"> *@
-                        @*     <a class="nav-link text-light" asp-controller="Account" asp-action="Login">Login</a> *@
-                        @* </li> *@
+
+
+                        
                         
                     </ul>
                 </div>

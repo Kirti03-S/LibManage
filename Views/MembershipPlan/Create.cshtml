@@ -1,0 +1,27 @@
+﻿@model LibManage.DTOs.CreateMembershipPlanDto
+
+<h2>Create Membership Plan</h2>
+
+<form asp-action="Create" method="post">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        <label asp-for="PlanName"></label>
+        <input asp-for="PlanName" class="form-control" />
+        <span asp-validation-for="PlanName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MaxBooksAllowed"></label>
+        <input asp-for="MaxBooksAllowed" class="form-control" />
+        <span asp-validation-for="MaxBooksAllowed" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DurationInDays"></label>
+        <input asp-for="DurationInDays" class="form-control" />
+        <span asp-validation-for="DurationInDays" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>

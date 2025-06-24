@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2>Welcome, @User.Identity?.Name 👋</h2>
+
+<div class="my-4">
+    <form asp-controller="Book" asp-action="Search" method="get">
+        <div class="input-group">
+            <input type="text" name="query" class="form-control" placeholder="Search books..." />
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card shadow-sm p-3">
+            <h4>📚 Explore Catalog</h4>
+            <p>Browse available books.</p>
+            <a class="btn btn-outline-primary" asp-controller="Catalog" asp-action="Index">View Catalog</a>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm p-3">
+            <h4>📝 Membership</h4>
+            <p>Request or check your membership status.</p>
+            <a class="btn btn-outline-success" asp-controller="MembershipRequest" asp-action="Status">View Membership</a>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm p-3">
+            <h4>📖 My Borrowed Books</h4>
+            <p>Check your lending records.</p>
+            <a class="btn btn-outline-info" asp-controller="LendingRecord" asp-action="MyRecords">My Records</a>
+        </div>
+    </div>
+</div>
+

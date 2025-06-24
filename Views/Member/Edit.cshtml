@@ -1,0 +1,28 @@
+﻿@model LibManage.DTOs.Member.CreateMemberDto
+
+<h2>Edit Member</h2>
+
+<form asp-action="Edit" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MembershipPlanId"></label>
+        <select asp-for="MembershipPlanId" asp-items="Model.MembershipPlans" class="form-control">
+            <option value="">-- Select Plan --</option>
+        </select>
+        <span asp-validation-for="MembershipPlanId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

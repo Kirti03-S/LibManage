@@ -1,0 +1,58 @@
+﻿@model List<LibManage.DTOs.MembershipRequest.MembershipRequestViewModel>
+
+@{
+    ViewData["Title"] = "Pending Membership Requests";
+}
+
+<h2>Pending Membership Requests</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Plan</th>
+            <th>Selected Books</th>
+            <th>Requested On</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.UserEmail</td>
+                <td>@r.PlanName</td>
+                <td>
+                    <ul>
+                        @foreach (var book in r.BookTitles)
+                        {
+                            <li>@book</li>
+                        }
+                    </ul>
+                </td>
+                <td>@r.RequestedOn.ToShortDateString()</td>
+                <td>@r.Status</td>
+                <td>
+                    <form asp-action="Approve" method="post" style="display:inline">
+                        <input type="hidden" name="id" value="@r.Id" />
+                        <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                    </form>
+                    <form asp-action="Reject" method="post" style="display:inline">
+                        <input type="hidden" name="id" value="@r.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
