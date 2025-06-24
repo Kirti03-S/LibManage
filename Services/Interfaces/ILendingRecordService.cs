@@ -1,15 +1,7 @@
 ﻿using LibManage.DTOs.LendingRecord;
 
-public interface ILendingRecordService
+public interface ILendingService
 {
-    Task<List<LendingRecordDto>> GetAllAsync();
-    Task<LendingRecordDto?> GetByIdAsync(int id);
-    Task AddAsync(LendingRecordDto dto);
-    Task DeleteAsync(int id);
-    Task MarkAsReturnedAsync(int id);
-
-    // New additions for Create View
-    Task<CreateLendingRecordDto> GetCreateViewModelAsync();
-    Task CreateAsync(CreateLendingRecordDto dto);
-
+    Task<string> BorrowBookAsync(string username, int bookId);
+    Task<List<LendingRecord>> GetCurrentLendingsAsync(string username);
 }

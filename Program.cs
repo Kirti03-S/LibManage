@@ -39,7 +39,7 @@ builder.Services.AddScoped<ILendingRecordRepository, LendingRecordRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 
 // Services
-builder.Services.AddScoped<ILendingRecordService, LendingRecordService>();
+builder.Services.AddScoped<ILendingService, LendingService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 
 builder.Services.AddScoped<IMembershipRequestService, MembershipRequestService>();

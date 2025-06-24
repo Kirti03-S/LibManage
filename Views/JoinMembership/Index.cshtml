@@ -1,23 +1,30 @@
-﻿@model CreateMembershipRequestDto
+﻿@model List<LibManage.DTOs.MembershipPlan.MembershipPlanDto>
 
-<h2>Request Membership</h2>
-
-@if (TempData["Message"] != null)
-{
-    <div class="alert alert-success">@TempData["Message"]</div>
+@{
+    ViewData["Title"] = "Choose Your Membership Plan";
 }
 
-<form method="post">
-    <div class="form-group">
-        <label>Membership Plan</label>
-        <select asp-for="MembershipPlanId" asp-items="Model.AvailablePlans" class="form-control"></select>
-    </div>
+<h2 class="mb-4">Choose Your Membership Plan</h2>
 
-    <div class="form-group">
-        <label>Select Books</label>
-        <select asp-for="SelectedBookIds" asp-items="Model.AvailableBooks" class="form-control" multiple="multiple"></select>
-        <small class="text-muted">Select books according to your plan</small>
-    </div>
-
-    <button type="submit" class="btn btn-primary mt-2">Request Membership</button>
-</form>
+<div class="row">
+    @foreach (var plan in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-primary">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">@plan.PlanName</h5>
+                    <p class="card-text">
+                        <strong>Max Books Allowed:</strong> @plan.MaxBooksAllowed<br />
+                        <strong>Duration:</strong> @plan.DurationInDays days
+                    </p>
+                </div>
+                <div class="card-footer bg-white border-top-0 text-center">
+                    <form asp-controller="JoinMembership" asp-action="Index" method="post">
+                        <input type="hidden" name="MembershipPlanId" value="@plan.Id" />
+                        <button type="submit" class="btn btn-success btn-sm">Join Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>

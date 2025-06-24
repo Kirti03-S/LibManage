@@ -15,13 +15,14 @@ public class MembershipRequestService : IMembershipRequestService
         _memberRepo = memberRepo;
     }
 
-    public async Task CreateRequestAsync(string email, int planId, List<Book> books)
+    public async Task CreateRequestAsync(string email, int planId)
     {
         var request = new MembershipRequest
         {
             UserEmail = email,
             MembershipPlanId = planId,
-            SelectedBooks = books
+            Status = "Pending",
+            RequestedOn = DateTime.UtcNow
         };
 
         _context.MembershipRequests.Add(request);
@@ -107,5 +108,9 @@ public class MembershipRequestService : IMembershipRequestService
         };
     }
 
+    public Task CreateRequestAsync(string email, int planId, List<Book> books)
+    {
+        throw new NotImplementedException();
+    }
 }
 

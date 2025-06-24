@@ -1,48 +1,20 @@
-﻿using LibManage.DTOs.LendingRecord;
-using LibManage.Services.Interfaces;
+﻿using LibManage.Models.LibManage.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+[Authorize]
 public class LendingRecordController : Controller
 {
-    private readonly ILendingRecordService _service;
+    private readonly ILendingService _lendingService;
 
-    public LendingRecordController(ILendingRecordService service)
+    public LendingRecordController(ILendingService lendingService)
     {
-        _service = service;
+        _lendingService = lendingService;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> MyLendings()
     {
-        var records = await _service.GetAllAsync();
+        var records = await _lendingService.GetCurrentLendingsAsync(User.Identity!.Name!);
         return View(records);
     }
-
-    [HttpPost]
-    public async Task<IActionResult> Return(int id)
-    {
-        await _service.MarkAsReturnedAsync(id);
-        return RedirectToAction(nameof(Index));
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> Create()
-    {
-        var dto = await _service.GetCreateViewModelAsync();
-        return View(dto); // Should match Views/LendingRecord/Create.cshtml
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Create(CreateLendingRecordDto dto)
-    {
-        if (!ModelState.IsValid)
-        {
-            dto = await _service.GetCreateViewModelAsync(); // repopulate dropdowns
-            return View(dto);
-        }
-
-        await _service.CreateAsync(dto);
-        return RedirectToAction(nameof(Index));
-    }
-}   
-
-
+}

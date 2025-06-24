@@ -3,7 +3,7 @@ using LibManage.Models;
 
 public interface IMembershipRequestService
 {
-    Task CreateRequestAsync(string email, int planId, List<Book> books);
+    Task CreateRequestAsync(string email, int planId);
     Task<List<MembershipRequestViewModel>> GetPendingRequestsAsync();
     Task ApproveRequestAsync(int id);
     Task RejectRequestAsync(int requestId);

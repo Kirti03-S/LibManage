@@ -22,7 +22,7 @@ namespace LibManage.Repositories
             return await _context.Books.ToListAsync();
         }
 
-        public async Task<Book?> GetByIdAsync(Guid id) 
+        public async Task<Book?> GetByIdAsync(int id) 
         {
             return await _context.Books.FindAsync(id);
         }

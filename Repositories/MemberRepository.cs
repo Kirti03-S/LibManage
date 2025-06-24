@@ -49,6 +49,12 @@ namespace LibManage.Repositories
                 .Include(m => m.SelectedBooks)
                 .FirstOrDefaultAsync(m => m.Email == email);
         }
-
+        public async Task<Member?> GetByUsernameAsync(string username)
+        {
+            return await _context.Members
+                .Include(m => m.MembershipPlan)
+                .Include(m => m.SelectedBooks)
+                .FirstOrDefaultAsync(m => m.Email == username); // or m.Username if you have that column
+        }
     }
 }

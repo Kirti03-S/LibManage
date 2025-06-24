@@ -20,7 +20,6 @@
         {
             <tr>
                 <td>@record.BookTitle</td>
-                <td>@record.MemberName</td>
                 <td>@record.BorrowedDate.ToShortDateString()</td>
                 <td>@record.DueDate.ToShortDateString()</td>
                 <td>@(record.ReturnedDate?.ToShortDateString() ?? "Not Returned")</td>

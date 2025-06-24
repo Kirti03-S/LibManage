@@ -1,120 +1,65 @@
-﻿using LibManage.DTOs.LendingRecord;
-using LibManage.Models;
-using LibManage.Repositories;
+﻿using LibManage.Data;
 using LibManage.Repositories.Interfaces;
-using LibManage.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using LibManage.Repositories;
+using Microsoft.EntityFrameworkCore;
 
-public class LendingRecordService : ILendingRecordService
+public class LendingService : ILendingService
 {
-    private readonly ILendingRecordRepository _repo;
-    private readonly IBookRepository _bookRepo;
+    private readonly LibraryDbContext _context;
     private readonly IMemberRepository _memberRepo;
+    private readonly IBookRepository _bookRepo;
 
-    public LendingRecordService(
-        ILendingRecordRepository repo,
-        IBookRepository bookRepo,
-        IMemberRepository memberRepo)
+    public LendingService(LibraryDbContext context, IMemberRepository memberRepo, IBookRepository bookRepo)
     {
-        _repo = repo;
-        _bookRepo = bookRepo;
+        _context = context;
         _memberRepo = memberRepo;
+        _bookRepo = bookRepo;
     }
 
-    public async Task<List<LendingRecordDto>> GetAllAsync()
+    public async Task<string> BorrowBookAsync(string username, int bookId)
     {
-        var records = await _repo.GetAllAsync();
+        var member = await _memberRepo.GetByEmailAsync(username);
+        if (member == null)
+            return "You must be a registered member to borrow books.";
 
-        return records.Select(r => new LendingRecordDto
-        {
-            Id = r.Id,
-            BookId = r.BookId,
-            BookTitle = r.Book?.Title ?? "",
-            MemberId = r.MemberId,
-            MemberName = r.Member?.Name ?? "",
-            BorrowedDate = r.BorrowedDate,
-            DueDate = r.DueDate,
-            ReturnedDate = r.ReturnedDate
-        }).ToList();
-    }
+        var plan = await _context.MembershipPlans.FindAsync(member.MembershipPlanId);
+        if (plan == null)
+            return "Invalid membership plan.";
 
-    public async Task AddAsync(LendingRecordDto dto)
-    {
-        var record = new LendingRecord
+        var currentBorrowed = await _context.LendingRecords
+            .Where(l => l.MemberId == member.Id && l.ReturnedDate == null)
+            .CountAsync();
+
+        if (currentBorrowed >= plan.MaxBooksAllowed)
+            return $"You have already borrowed the maximum number of books ({plan.MaxBooksAllowed}).";
+
+        var book = await _bookRepo.GetByIdAsync(bookId);
+        if (book == null || book.Stock <= 0)
+            return "Book is not available for lending.";
+
+        var lending = new LendingRecord
         {
-            BookId = dto.BookId,
-            MemberId = dto.MemberId,
+            BookId = bookId,
+            MemberId = member.Id,
             BorrowedDate = DateTime.UtcNow,
-            DueDate = dto.DueDate
+            DueDate = DateTime.UtcNow.AddDays(plan.DurationInDays)
         };
 
-        await _repo.AddAsync(record);
+        _context.LendingRecords.Add(lending);
+        book.Stock -= 1;
+
+        await _context.SaveChangesAsync();
+        return "Book successfully borrowed.";
     }
 
-    public async Task MarkAsReturnedAsync(int id)
+    public async Task<List<LendingRecord>> GetCurrentLendingsAsync(string username)
     {
-        var record = await _repo.GetByIdAsync(id);
-        if (record != null)
-        {
-            record.ReturnedDate = DateTime.UtcNow;
-            await _repo.UpdateAsync(record);
-        }
+        var member = await _memberRepo.GetByEmailAsync(username);
+        if (member == null) return new List<LendingRecord>();
+
+        return await _context.LendingRecords
+            .Include(l => l.Book)
+            .Where(l => l.MemberId == member.Id && l.ReturnedDate == null)
+            .ToListAsync();
     }
-
-    // ✅ New: ViewModel for Create page
-    public async Task<CreateLendingRecordDto> GetCreateViewModelAsync()
-    {
-        var books = await _bookRepo.GetAllAsync();
-        var members = await _memberRepo.GetAllAsync();
-
-        return new CreateLendingRecordDto
-        {
-            Books = books.Select(b => new SelectListItem { Value = b.Id.ToString(), Text = b.Title }).ToList(),
-            Members = members.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Name }).ToList(),
-            BorrowedDate = DateTime.Now,
-            DueDate = DateTime.Now.AddDays(14)
-        };
-    }
-
-    // ✅ New: Create from ViewModel
-    public async Task CreateAsync(CreateLendingRecordDto dto)
-    {
-        var record = new LendingRecord
-        {
-            BookId = dto.BookId,
-            MemberId = dto.MemberId,
-            BorrowedDate = dto.BorrowedDate,
-            DueDate = dto.DueDate
-        };
-
-        await _repo.AddAsync(record);
-    }
-
-    public async Task<LendingRecordDto?> GetByIdAsync(int id)
-    {
-        var r = await _repo.GetByIdAsync(id);
-        if (r == null) return null;
-
-        return new LendingRecordDto
-        {
-            Id = r.Id,
-            BookId = r.BookId,
-            BookTitle = r.Book?.Title ?? "",
-            MemberId = r.MemberId,
-            MemberName = r.Member?.Name ?? "",
-            BorrowedDate = r.BorrowedDate,
-            DueDate = r.DueDate,
-            ReturnedDate = r.ReturnedDate
-        };
-    }
-
-    public async Task DeleteAsync(int id)
-    {
-        var record = await _repo.GetByIdAsync(id);
-        if (record != null)
-        {
-            await _repo.DeleteAsync(record);
-        }
-    }
-
 }
