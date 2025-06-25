@@ -20,13 +20,21 @@
         @foreach (var review in Model)
         {
             <tr>
-                <h5>@review.BookTitle</h5>
+                <td><h6>@review.BookTitle</h6></td>
                 <td>@review.MemberName</td>
                 <td>@review.Rating</td>
                 <td>@review.Comment</td>
                 <td>@review.CreatedDate.ToShortDateString()</td>
                 <td>
-                    <a asp-action="Delete" asp-route-id="@review.Id" class="btn btn-sm btn-danger">Delete</a>
+                    @{
+                        if(User.Identity.Name == review.MemberName)
+                        {
+                            <a asp-action="Delete" asp-route-id="@review.Id" class="btn btn-sm btn-danger">Delete</a>
+                        }
+                        else
+                        {
+                            <div class="text-secondary" style="font-size:15px">None</div>                        }
+                    }
                 </td>
             </tr>
         }
