@@ -1,0 +1,27 @@
+﻿@model List<LibManage.DTOs.AuthorDto>
+
+@{
+    ViewData["Title"] = "All Authors";
+}
+
+<h2>Authors</h2>
+
+<a href="@Url.Action("Create")" class="btn btn-success mb-3">Add New Author</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Biography</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var author in Model)
+        {
+            <tr>
+                <td>@author.FirstName @author.LastName</td>
+                <td>@author.Biography</td>
+            </tr>
+        }
+    </tbody>
+</table>

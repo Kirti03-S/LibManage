@@ -27,24 +27,44 @@
 
     <div class="form-group">
         <label asp-for="Stock"></label>
-        <input asp-for="Stock" class="form-control" />
+        <input asp-for="Stock" class="form-control" min="1" />
         <span asp-validation-for="Stock" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="AuthorId"></label>
+        <label asp-for="AuthorId">Author</label>
         <select asp-for="AuthorId" asp-items="ViewBag.Authors" class="form-control">
             <option value="">-- Select Author --</option>
         </select>
         <span asp-validation-for="AuthorId" class="text-danger"></span>
+
+        <p class="mt-1">---------Or---------</p>
+        <div class="my-1">
+            <a class="btn btn-success p-2"
+               asp-controller="Author"
+               asp-action="Create"
+               asp-route-returnUrl="@Url.Action("Create", "Book")">
+                + Add New Author
+            </a>
+        </div>
     </div>
 
     <div class="form-group">
-        <label asp-for="GenreId"></label>
+        <label asp-for="GenreId">Genre</label>
         <select asp-for="GenreId" asp-items="ViewBag.Genres" class="form-control">
             <option value="">-- Select Genre --</option>
         </select>
         <span asp-validation-for="GenreId" class="text-danger"></span>
+
+        <p class="mt-1">----------Or--------</p>
+        <div class="my-1">
+            <a class="btn btn-success p-2"
+               asp-controller="Genre"
+               asp-action="Create"
+               asp-route-returnUrl="@Url.Action("Create", "Book")">
+                + Add New Genre
+            </a>
+        </div>
     </div>
 
     <div class="form-group">
