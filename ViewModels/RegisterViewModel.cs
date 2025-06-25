@@ -4,20 +4,21 @@ namespace LibManage.ViewModels
 {
     public class RegisterViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Username is required.")]
         public string Username { get; set; }
 
-        [Required, EmailAddress]
+        [Required(ErrorMessage = "Email is required.")]
+        [EmailAddress(ErrorMessage = "Invalid email address.")]
         public string Email { get; set; }
 
-        [Required]
-        [DataType(DataType.Password)]  
+        [Required(ErrorMessage = "Password is required.")]
+        [DataType(DataType.Password)]
+        [MinLength(6, ErrorMessage = "Password must be at least 6 characters.")]
         public string Password { get; set; }
 
-        [Required]
-        [Compare("Password", ErrorMessage = "Passwords do not match.")]
+        [Required(ErrorMessage = "Confirm Password is required.")]
         [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "Passwords do not match.")]
         public string ConfirmPassword { get; set; }
     }
-
 }

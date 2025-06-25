@@ -19,30 +19,39 @@ public class JoinMembershipController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index()
-    {
-        var plans = await _planService.GetAllAsync();
-        return View(plans); // View expects List<MembershipPlanDto>
-    }
+public async Task<IActionResult> Index()
+{
+    var email = User.Identity?.Name!;
+    var plans = await _planService.GetAllAsync();
+    var existingMember = await _requestService.GetCurrentMemberPlanAsync(email); // ✅ Add this method
+
+    ViewBag.CurrentPlanId = existingMember?.MembershipPlanId;
+
+    return View(plans); // ✅ This is correct
+}
+
     [HttpPost]
     public async Task<IActionResult> Index(CreateMembershipRequestDto dto)
     {
         if (!ModelState.IsValid)
         {
-            dto.AvailablePlans = (await _planService.GetAllAsync())
-                .Select(p => new SelectListItem
-                {
-                    Value = p.Id.ToString(),
-                    Text = p.PlanName
-                }).ToList();
-
-            return View(dto);
+            TempData["Message"] = "Invalid submission.";
+            return RedirectToAction("Index");
         }
 
         var email = User.Identity?.Name!;
-        await _requestService.CreateRequestAsync(email, dto.MembershipPlanId);
+        try
+        {
+            await _requestService.CreateRequestAsync(email, dto.MembershipPlanId);
+            TempData["Message"] = "Request submitted. Admin will review it.";
+        }
+        catch (InvalidOperationException ex)
+        {
+            TempData["Message"] = ex.Message;
+        }
 
-        TempData["Message"] = "Request submitted. Admin will review it.";
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("Index"); // ✅ Always redirect so view uses correct model
     }
+
+
 }

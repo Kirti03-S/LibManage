@@ -17,4 +17,11 @@ public class LendingRecordController : Controller
         var records = await _lendingService.GetCurrentLendingsAsync(User.Identity!.Name!);
         return View(records);
     }
+
+    [HttpPost]
+    public async Task<IActionResult> Return(int id)
+    {
+        await _lendingService.ReturnBookAsync(id);
+        return RedirectToAction(nameof(MyLendings));
+    }
 }

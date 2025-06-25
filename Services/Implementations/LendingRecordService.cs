@@ -62,4 +62,18 @@ public class LendingService : ILendingService
             .Where(l => l.MemberId == member.Id && l.ReturnedDate == null)
             .ToListAsync();
     }
+
+    public async Task ReturnBookAsync(int lendingRecordId)
+    {
+        var record = await _context.LendingRecords
+            .Include(l => l.Book)
+            .FirstOrDefaultAsync(l => l.Id == lendingRecordId);
+
+        if (record != null && record.ReturnedDate == null)
+        {
+            record.ReturnedDate = DateTime.UtcNow;
+            record.Book.Stock += 1;
+            await _context.SaveChangesAsync();
+        }
+    }
 }

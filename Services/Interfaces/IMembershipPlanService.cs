@@ -1,5 +1,6 @@
 ﻿using LibManage.DTOs;
 using LibManage.DTOs.MembershipPlan;
+using LibManage.Models;
 
 public interface IMembershipPlanService
 {
@@ -8,4 +9,5 @@ public interface IMembershipPlanService
     Task CreateAsync(CreateMembershipPlanDto dto);
     Task UpdateAsync(CreateMembershipPlanDto dto);
     Task DeleteAsync(int id);
+    
 }

@@ -1,28 +1,44 @@
 ﻿@model List<LibManage.DTOs.MembershipPlan.MembershipPlanDto>
-
 @{
     ViewData["Title"] = "Choose Your Membership Plan";
+    int? currentPlanId = ViewBag.CurrentPlanId as int?;
 }
 
 <h2 class="mb-4">Choose Your Membership Plan</h2>
 
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-info">@TempData["Message"]</div>
+}
+
 <div class="row">
     @foreach (var plan in Model)
     {
+        var isCurrent = currentPlanId.HasValue && plan.Id == currentPlanId.Value;
+
         <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm border-primary">
+            <div class="card h-100 shadow-sm @(isCurrent ? "border-secondary" : "border-primary")">
                 <div class="card-body">
-                    <h5 class="card-title text-primary">@plan.PlanName</h5>
+                    <h5 class="card-title @(isCurrent ? "text-secondary" : "text-primary")">@plan.PlanName</h5>
                     <p class="card-text">
                         <strong>Max Books Allowed:</strong> @plan.MaxBooksAllowed<br />
                         <strong>Duration:</strong> @plan.DurationInDays days
                     </p>
                 </div>
-                <div class="card-footer bg-white border-top-0 text-center">
-                    <form asp-controller="JoinMembership" asp-action="Index" method="post">
-                        <input type="hidden" name="MembershipPlanId" value="@plan.Id" />
-                        <button type="submit" class="btn btn-success btn-sm">Join Now</button>
-                    </form>
+                <div class="card-footer bg-white text-center">
+                    @if (isCurrent)
+                    {
+                        <button class="btn btn-outline-secondary btn-sm" disabled>
+                            ✅ You already have this plan
+                        </button>
+                    }
+                    else
+                    {
+                        <form asp-controller="JoinMembership" asp-action="Index" method="post">
+                            <input type="hidden" name="MembershipPlanId" value="@plan.Id" />
+                            <button type="submit" class="btn btn-success btn-sm">Join Now</button>
+                        </form>
+                    }
                 </div>
             </div>
         </div>

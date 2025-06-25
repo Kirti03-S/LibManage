@@ -14,6 +14,7 @@ else
                 <th>Book Title</th>
                 <th>Borrowed Date</th>
                 <th>Due Date</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -23,6 +24,12 @@ else
                     <td>@item.Book.Title</td>
                     <td>@item.BorrowedDate.ToShortDateString()</td>
                     <td>@item.DueDate.ToShortDateString()</td>
+                    <td>
+                        <form asp-action="Return" asp-controller="LendingRecord" method="post">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-danger btn-sm">Return</button>
+                        </form>
+                    </td>
                 </tr>
             }
         </tbody>

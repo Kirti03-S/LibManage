@@ -1,5 +1,4 @@
-﻿using LibManage.Data;
-using LibManage.Models;
+﻿using LibManage.Data;   
 using LibManage.Models.LibManage.Models;
 using LibManage.ViewModels;
 using Microsoft.AspNetCore.Authentication;
@@ -79,15 +78,20 @@ namespace LibManage.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
-
         {
-            if (!ModelState.IsValid) return View(model);
+            if (!ModelState.IsValid)
+                return View(model);
 
-            var user = _context.Users.FirstOrDefault(u => u.Username == model.Username);
+            var input = model.UsernameOrEmail.ToLower();
+
+            var user = _context.Users.FirstOrDefault(u =>
+                u.Username.ToLower() == input ||
+                u.Email.ToLower() == input);
+
             if (user == null)
             {
                 ViewBag.Error = "Invalid credentials.";
-                return View();
+                return View(model);
             }
 
             var passwordHasher = new PasswordHasher<User>();
@@ -96,26 +100,23 @@ namespace LibManage.Controllers
             if (result == PasswordVerificationResult.Failed)
             {
                 ViewBag.Error = "Invalid credentials.";
-                return View();
+                return View(model);
             }
 
             var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), 
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, user.Role)
-};
-
+    {
+        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+        new Claim(ClaimTypes.Name, user.Username),
+        new Claim(ClaimTypes.Role, user.Role)
+    };
 
             var identity = new ClaimsIdentity(claims, "CookieAuth");
             var principal = new ClaimsPrincipal(identity);
 
             await HttpContext.SignInAsync("CookieAuth", principal);
 
-
             return RedirectToAction("Index", "Dashboard");
         }
-
 
 
         public async Task<IActionResult> Logout()

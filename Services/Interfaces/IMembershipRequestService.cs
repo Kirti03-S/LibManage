@@ -8,6 +8,7 @@ public interface IMembershipRequestService
     Task ApproveRequestAsync(int id);
     Task RejectRequestAsync(int requestId);
     Task<MembershipRequestViewModel?> GetRequestByUsernameAsync(string username);
+    Task<Member?> GetCurrentMemberPlanAsync(string email);
 
 
 }

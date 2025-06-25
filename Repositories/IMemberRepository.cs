@@ -10,6 +10,5 @@ namespace LibManage.Repositories.Interfaces
         Task DeleteAsync(Member member);
         Task<Member?> GetByEmailAsync(string email);
         Task<Member?> GetByUsernameAsync(string username);
-
     }
 }

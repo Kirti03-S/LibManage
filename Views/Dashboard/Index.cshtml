@@ -2,40 +2,49 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<h2>Welcome, @User.Identity?.Name 👋</h2>
+<style>
+    .dashboard-wrapper {
+        min-height: calc(100vh - 180px); /* Adjust for header/footer height */
+    }
+</style>
 
-<div class="my-4">
-    <form asp-controller="Book" asp-action="Search" method="get">
-        <div class="input-group">
-            <input type="text" name="query" class="form-control" placeholder="Search books..." />
-            <button type="submit" class="btn btn-primary">Search</button>
+<div class="container-fluid dashboard-wrapper d-flex align-items-center justify-content-center">
+    <div class="text-center w-100">
+        <h2 class="mb-4">Welcome, @User.Identity?.Name 👋</h2>
+
+        <div class="row g-4 justify-content-center" style="max-width: 1140px; margin: 0 auto;">
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card h-100 shadow-sm p-3 text-center" style="min-height: 320px;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/29/29302.png"
+                         class="card-img-top rounded mb-2 mx-auto"
+                         style="max-height: 120px; object-fit: contain; width: 100px;" alt="Catalog" />
+                    <h4>📚 Explore Catalog</h4>
+                    <p>Browse available books.</p>
+                    <a class="btn btn-outline-primary mt-auto" asp-controller="Catalog" asp-action="Index">View Catalog</a>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card h-100 shadow-sm p-3 text-center" style="min-height: 320px;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2983/2983829.png"
+                         class="card-img-top rounded mb-2 mx-auto"
+                         style="max-height: 120px; object-fit: contain; width: 100px;" alt="Membership" />
+                    <h4>📝 Membership</h4>
+                    <p>Request or check your membership status.</p>
+                    <a class="btn btn-outline-success mt-auto" asp-controller="MembershipRequest" asp-action="Status">View Membership</a>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card h-100 shadow-sm p-3 text-center" style="min-height: 320px;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png"
+                         class="card-img-top rounded mb-2 mx-auto"
+                         style="max-height: 120px; object-fit: contain; width: 100px;" alt="Lending" />
+                    <h4>📖 My Borrowed Books</h4>
+                    <p>Check your lending records.</p>
+                    <a class="btn btn-outline-info mt-auto" asp-controller="LendingRecord" asp-action="MyLendings">My Records</a>
+                </div>
+            </div>
         </div>
-    </form>
+    </div>
 </div>
-
-<div class="row mt-4">
-    <div class="col-md-4">
-        <div class="card shadow-sm p-3">
-            <h4>📚 Explore Catalog</h4>
-            <p>Browse available books.</p>
-            <a class="btn btn-outline-primary" asp-controller="Catalog" asp-action="Index">View Catalog</a>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="card shadow-sm p-3">
-            <h4>📝 Membership</h4>
-            <p>Request or check your membership status.</p>
-            <a class="btn btn-outline-success" asp-controller="MembershipRequest" asp-action="Status">View Membership</a>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="card shadow-sm p-3">
-            <h4>📖 My Borrowed Books</h4>
-            <p>Check your lending records.</p>
-            <a class="btn btn-outline-info" asp-controller="LendingRecord" asp-action="MyRecords">My Records</a>
-        </div>
-    </div>
-</div>
-

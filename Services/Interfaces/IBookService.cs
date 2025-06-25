@@ -11,6 +11,7 @@ namespace LibManage.Services.Interfaces
         Task<BookDto> UpdateBookAsync(int id, CreateBookDto dto);
         Task<bool> DeleteBookAsync(int id);
         Task<(List<BookDto> Books, int TotalCount)> GetPagedBooksAsync(int pageNumber, int pageSize);
+       
 
     }
 }

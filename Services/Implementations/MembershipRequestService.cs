@@ -17,6 +17,21 @@ public class MembershipRequestService : IMembershipRequestService
 
     public async Task CreateRequestAsync(string email, int planId)
     {
+        // Get the latest membership request
+        var existingRequest = await _context.MembershipRequests
+            .Where(r => r.UserEmail == email && (r.Status == "Pending" || r.Status == "Approved"))
+            .OrderByDescending(r => r.RequestedOn)
+            .FirstOrDefaultAsync();
+
+        if (existingRequest != null)
+        {
+            // Allow only if new plan is an upgrade
+            if (planId <= existingRequest.MembershipPlanId)
+            {
+                throw new InvalidOperationException("You already have a membership request. You can only request an upgrade to a higher plan.");
+            }
+        }
+
         var request = new MembershipRequest
         {
             UserEmail = email,
@@ -91,7 +106,6 @@ public class MembershipRequestService : IMembershipRequestService
     {
         var request = await _context.MembershipRequests
             .Include(r => r.MembershipPlan)
-            .Include(r => r.SelectedBooks)
             .Where(r => r.UserEmail == username)
             .OrderByDescending(r => r.RequestedOn)
             .FirstOrDefaultAsync();
@@ -111,6 +125,10 @@ public class MembershipRequestService : IMembershipRequestService
     public Task CreateRequestAsync(string email, int planId, List<Book> books)
     {
         throw new NotImplementedException();
+    }
+    public async Task<Member?> GetCurrentMemberPlanAsync(string email)
+    {
+        return await _context.Members.FirstOrDefaultAsync(m => m.Email == email);
     }
 }
 
